@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html ng-app>
+<head>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src="raphael.js"></script>
+  <script src="popup.js"></script>
+  <script src="analytics.js"></script>
+  <script src="fgclock.js"></script>
+  <link rel="stylesheet" href="fgclock.css" />
+  </style>
+</head>
+<body ng-controller="FgClockCtrl">
+
+  <h1>The</h1>
+  <h3>totally inaccurate</h3>
+  <h1>FREEGOLD CLOCK</h1>
+
+  <div id="holder"></div>
+
+  <table id="data">
+    <tfoot>
+      <tr>
+        <th ng-repeat="gld_line in gld_data">{{gld_line.date}}</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td ng-repeat="gld_line in gld_data">{{gld_line.tons}}</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
