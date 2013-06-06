@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="fgclock">
 <head>
   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
@@ -8,28 +7,46 @@
   <script src="popup.js"></script>
   <script src="analytics.js"></script>
   <script src="fgclock.js"></script>
+  <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
   <link rel="stylesheet" href="fgclock.css" />
   </style>
 </head>
 <body ng-controller="FgClockCtrl">
 
-  <h1>The</h1>
-  <h3>totally inaccurate</h3>
-  <h1>FREEGOLD CLOCK</h1>
+  <div class="container">
 
-  <div id="holder"></div>
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+      <p class="lead">The totally inaccurate</p>
+      <h1>Freegold Clock</h1>
+    </div>
 
-  <table id="data">
-    <tfoot>
-      <tr>
-        <th ng-repeat="gld_line in gld_data">{{gld_line.date}}</th>
-      </tr>
-    </tfoot>
-    <tbody>
-      <tr>
-        <td ng-repeat="gld_line in gld_data">{{gld_line.tons}}</td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="fgday well">
+      <div ng-show="predictive_fg_day" class="fglabel">Estimated Freegold transition</div>
+      <h1>{{predictive_fg_day}}</h1>
+      <div ng-hide="predictive_fg_day">Loading GLD data...</div>
+    </div>
+
+
+    <div id="holder"></div>
+
+    <table ng-show="gld_data" class="table table-striped">
+      <thead>
+        <tr>
+          <td>Date</td>
+          <td>Tons in GLD</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="gld_line in gld_data | reverse">
+          <td>{{gld_line.date}}</td>
+          <td>{{gld_line.tons}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <a href="https://github.com/nand2/fg-clock"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+
 </body>
 </html>

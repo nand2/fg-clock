@@ -12,15 +12,8 @@ Raphael.fn.drawGrid = function (x, y, w, h, wv, hv, color) {
     return this.path(path.join(",")).attr({stroke: color});
 };
 
-$(function () {
-    $("#data").css({
-        position: "absolute",
-        left: "-9999em",
-        top: "-9999em"
-    });
-});
 
-window.yihaaah = function () {
+window.yihaaah = function (gld_data, predictive_data) {
     function getAnchors(p1x, p1y, p2x, p2y, p3x, p3y) {
         var l1 = (p2x - p1x) / 2,
             l2 = (p3x - p2x) / 2,
@@ -42,29 +35,28 @@ window.yihaaah = function () {
     }
     // Grab the data
     var labels = [],
-        data = [];
-    var i = 0;
-    $("#data tfoot th").each(function () {
-        if(i%40 == 0) {
-            labels.push($(this).html());    
-        }
-        else {
-            labels.push("");
-        }
-        
-        i++;
-    });
-    $("#data tbody td").each(function () {
-        data.push($(this).html());
-    });
+        data = [],
+        prediction = [];
+    for(var i = 0; i < gld_data.length; i++) {
+        labels.push(gld_data[i].date);    
+        data.push(gld_data[i].tons);
+        prediction.push(false);
+    }
+    for(var i = 0; i < predictive_data.length; i++) {
+        labels.push(predictive_data[i].date);    
+        data.push(predictive_data[i].tons);
+        prediction.push(true);
+    }
+
     // Draw
-    var width = 800,
-        height = 250,
-        leftgutter = 30,
-        bottomgutter = 20,
+    var width = $(window).width(),
+        height = $(window).height(),
+        leftgutter = 0,
+        bottomgutter = 0,
         topgutter = 20,
         colorhue = .6 || Math.random(),
         color = "hsl(" + [colorhue, .5, .5] + ")",
+        predictive_color = "hsl(" + [colorhue, .0, .0] + ")",
         r = Raphael("holder", width, height),
         txt = {font: '12px Helvetica, Arial', fill: "#fff"},
         txt1 = {font: '10px Helvetica, Arial', fill: "#fff"},
@@ -75,12 +67,15 @@ window.yihaaah = function () {
     //r.drawGrid(leftgutter + X * .5 + .5, topgutter + .5, width - leftgutter - X, height - topgutter - bottomgutter, 10, 10, "#000");
     var path = r.path().attr({stroke: color, "stroke-width": 4, "stroke-linejoin": "round"}),
         bgp = r.path().attr({stroke: "none", opacity: .3, fill: color}),
+        predictive_path = r.path().attr({stroke: color, "stroke-width": 4, "stroke-linejoin": "round"}),
+        predictive_bgp = r.path().attr({stroke: "none", opacity: .3, fill: predictive_color}),
         label = r.set(),
         lx = 0, ly = 0,
         is_label_visible = false,
         leave_timer,
         blanket = r.set();
     label.push(r.text(60, 12, "24 hits").attr(txt));
+    label.push(r.text(60, 27, "22 September 2008").attr(txt1).attr({fill: "#ccc"}));
     label.hide();
     var frame = r.popup(100, 100, label, "right").attr({fill: "#000", stroke: "#666", "stroke-width": 2, "fill-opacity": .7}).hide();
 
@@ -122,6 +117,7 @@ window.yihaaah = function () {
                 ly = label[0].transform()[0][2] + ppp.dy;
                 frame.show().stop().animate(anim);
                 label[0].attr({text: data + " ton" + (data == 1 ? "" : "s")}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
+                label[1].attr({text: lbl}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
                 dot.attr("r", 6);
                 is_label_visible = true;
             }, function () {
@@ -129,6 +125,7 @@ window.yihaaah = function () {
                 leave_timer = setTimeout(function () {
                     frame.hide();
                     label[0].hide();
+                    label[1].hide();
                     is_label_visible = false;
                 }, 1);
             });
@@ -140,5 +137,12 @@ window.yihaaah = function () {
     bgp.attr({path: bgpp});
     frame.toFront();
     label[0].toFront();
+    label[1].toFront();
     blanket.toFront();
+
+    // $(window).resize(function(){
+    //      w = $(window).width();
+    //      h = $(window).height();
+    //      r.setSize(w,h);
+    // });
 };
