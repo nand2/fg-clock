@@ -50,7 +50,7 @@ window.yihaaah = function (gld_data, predictive_data) {
 
     // Draw
     var width = $(window).width(),
-        height = $(window).height(),
+        height = $(window).height() - 40,
         leftgutter = 0,
         bottomgutter = 0,
         topgutter = 20,
