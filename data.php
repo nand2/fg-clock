@@ -7,6 +7,7 @@ $csv = file_get_contents("http://www.spdrgoldshares.com/assets/dynamic/GLD/GLD_U
 $csv_lines = explode("\n", $csv);
 
 $data = array();
+$collecting_data = false;
 foreach($csv_lines as $csv_line) {
   $new_line = str_getcsv($csv_line);
 
@@ -15,7 +16,12 @@ foreach($csv_lines as $csv_line) {
       $entry = floatval($entry);
     }
   }
-  if(isset($new_line[10]) && is_numeric($new_line[10])) {
+
+  //Starting date for the graph: 15-Aug-2012
+  if($new_line[0] == "15-Aug-2012") {
+    $collecting_data = true;
+  }
+  if($collecting_data && isset($new_line[10]) && is_numeric($new_line[10])) {
     $data[] = array(
       "date" => $new_line[0],
       "tons" => $new_line[10]
@@ -23,7 +29,7 @@ foreach($csv_lines as $csv_line) {
   }
 }
 
-$result["gld_data"] = array_slice($data, -201);
+$result["gld_data"] = $data;
 
 // Process predictive decline
 $predictive_data = array();
