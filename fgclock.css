@@ -48,6 +48,10 @@ body {
     font-size: 60px;
 }
 
+.fgday .loading {
+    padding-bottom: 20px;
+}
+
 .modal .video {
     margin: 0px auto; 
     width: 480px;
