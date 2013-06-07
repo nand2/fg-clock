@@ -1,18 +1,3 @@
-Raphael.fn.drawGrid = function (x, y, w, h, wv, hv, color) {
-    color = color || "#000";
-    var path = ["M", Math.round(x) + .5, Math.round(y) + .5, "L", Math.round(x + w) + .5, Math.round(y) + .5, Math.round(x + w) + .5, Math.round(y + h) + .5, Math.round(x) + .5, Math.round(y + h) + .5, Math.round(x) + .5, Math.round(y) + .5],
-        rowHeight = h / hv,
-        columnWidth = w / wv;
-    for (var i = 1; i < hv; i++) {
-        path = path.concat(["M", Math.round(x) + .5, Math.round(y + i * rowHeight) + .5, "H", Math.round(x + w) + .5]);
-    }
-    for (i = 1; i < wv; i++) {
-        path = path.concat(["M", Math.round(x + i * columnWidth) + .5, Math.round(y) + .5, "V", Math.round(y + h) + .5]);
-    }
-    return this.path(path.join(",")).attr({stroke: color});
-};
-
-
 window.yihaaah = function (gld_data, predictive_data) {
     function getAnchors(p1x, p1y, p2x, p2y, p3x, p3y) {
         var l1 = (p2x - p1x) / 2,
@@ -56,7 +41,7 @@ window.yihaaah = function (gld_data, predictive_data) {
         topgutter = 20,
         colorhue = .6 || Math.random(),
         color = "hsl(" + [colorhue, .5, .5] + ")",
-        predictive_color = "hsl(" + [colorhue, .0, .0] + ")",
+        predictive_color = "hsl(" + [colorhue, .8, .8] + ")",
         r = Raphael("holder", width, height),
         txt = {font: '12px Helvetica, Arial', fill: "#fff"},
         txt1 = {font: '10px Helvetica, Arial', fill: "#fff"},
@@ -64,7 +49,6 @@ window.yihaaah = function (gld_data, predictive_data) {
         X = (width - leftgutter) / labels.length,
         max = Math.max.apply(Math, data),
         Y = (height - bottomgutter - topgutter) / max;
-    //r.drawGrid(leftgutter + X * .5 + .5, topgutter + .5, width - leftgutter - X, height - topgutter - bottomgutter, 10, 10, "#000");
     var path = r.path().attr({stroke: color, "stroke-width": 4, "stroke-linejoin": "round"}),
         bgp = r.path().attr({stroke: "none", opacity: .3, fill: color}),
         predictive_path = r.path().attr({stroke: color, "stroke-width": 4, "stroke-linejoin": "round"}),
@@ -97,7 +81,11 @@ window.yihaaah = function (gld_data, predictive_data) {
             p = p.concat([a.x1, a.y1, x, y, a.x2, a.y2]);
             bgpp = bgpp.concat([a.x1, a.y1, x, y, a.x2, a.y2]);
         }
-        var dot = r.circle(x, y, 1).attr({fill: "#333", stroke: color, "stroke-width": 2});
+        var dot_color = color;
+        if(prediction[i]) {
+            dot_color = predictive_color;
+        }
+        var dot = r.circle(x, y, 1).attr({fill: "#333", stroke: dot_color, "stroke-width": 2});
         blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));
         var rect = blanket[blanket.length - 1];
         (function (x, y, data, lbl, dot) {
