@@ -25,10 +25,11 @@ body {
     text-align: center;
 }
 .jumbotron .lead {
-    font-size: 24px;
+    font-size: 18px;
+    margin-bottom: 8px;
 }
 .jumbotron h1 {
-    font-size: 80px;
+    font-size: 70px;
 }
 .jumbotron .btn {
     font-size: 21px;
@@ -39,8 +40,8 @@ body {
 .fgday {
     margin-bottom: 120px;
     text-align: center;
-    padding-top: 20px;
-    padding-bottom: 30px;
+    padding-top: 30px;
+    padding-bottom: 20px;
 }
 
 .fgday h1 {
