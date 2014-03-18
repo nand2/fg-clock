@@ -8,6 +8,9 @@ $csv_lines = explode("\n", $csv);
 
 $data = array();
 $collecting_data = false;
+$sample_point = false;
+$sample_size = 0;
+
 foreach($csv_lines as $csv_line) {
   $new_line = str_getcsv($csv_line);
 
@@ -21,11 +24,17 @@ foreach($csv_lines as $csv_line) {
   if($new_line[0] == "15-Aug-2012") {
     $collecting_data = true;
   }
+  if($new_line[0] == "31-Dec-2012") {
+    $sample_point = true;
+  }
   if($collecting_data && isset($new_line[10]) && is_numeric($new_line[10])) {
     $data[] = array(
       "date" => $new_line[0],
       "tons" => $new_line[10]
     );
+		if ($sample_point) {
+			$sample_size++;
+		}
   }
 }
 
@@ -33,7 +42,6 @@ $result["gld_data"] = $data;
 
 // Process predictive decline
 $predictive_data = array();
-$sample_size = 75;
 $sum_deltas = 0;
 for($i = count($data) - 1; $i > 0 && $i > count($data) - 1 - $sample_size; $i--) {
   $sum_deltas += $data[$i]["tons"] - $data[$i-1]["tons"];
