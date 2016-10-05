@@ -8,7 +8,7 @@ angular.module('fgclock', [])
 });
 
 function FgClockCtrl($scope, $http) {
-  $http.get('/data.php').success(function(data) {
+  $http.get('data.php').success(function(data) {
     console.log(data);
     $scope.gld_data = data.gld_data;
     $scope.predictive_fg_day = data.predictive_data[data.predictive_data.length - 1].date;
